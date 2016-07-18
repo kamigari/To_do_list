@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  margin: 0;
+  min-width: 20px;
+}
+
+/* Include the padding and border in an element's total width and height */
+* {
+  box-sizing: border-box;
+}
+
+/* Remove margins and padding from the list */
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the list items */
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+  
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Set all odd list items to a different color (zebra-stripes) */
+ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* Darker background-color on hover */
+ul li:hover {
+  background: #ddd;
+}
+
+/* When clicked on, add a background color and strike out text */
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+/* Add a "checked" mark when clicked on */
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+/* Style the close button */
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px
+}
+
+.close:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Style the header */
+.header {
+  background-color: #0080FF;
+  padding: 15px 20px;
+  color: white;
+  text-align: center;
+}
+
+/* Clear floats after the header */
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the input */
+input[type=text] {
+    width: 200px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+	float: left;
+    background-color: white;
+    background-image: url('http://www.techstruggle.com/wp-content/uploads/2016/05/search-icon-th.png');
+	background-size: 20px 20px;
+    background-position: 8px 4px;
+    background-repeat: no-repeat;
+    padding: 5px 8px 11px 35px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 60%;
+}
+
+/* Style the "Add" button */
+.addBtn {
+  padding: 8px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  width: 12%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.addBtn:hover {
+  background-color: #bbb;
+}
+
+/* Style the "Add" button */
+.addBtn2 {
+  padding: 8px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.addBtn2:hover {
+  background-color: #bbb;
+}
+</style>
+</head>
+<body onload="funcionLoad()">
+
+<div id="myDIV" class="header">
+  <h2 style="margin:5px">To do list</h2>
+  <input type="text" id="myInput" placeholder="Title...">
+  <span onclick="newElement()" id='add' class="addBtn">Add</span>
+  <span onclick="end()" id='end' class="addBtn2">Finish</span>
+</div>
+
+<ul id="myUL"></ul>
+
+<script>
+
+// Mirar los objetos en local
+function funcionLoad() {
+  if(localStorage.getItem('Lista') != null && localStorage.getItem('Lista') != ""){
+  var currentListNoSplit = localStorage.getItem('Lista');
+  var currentList = currentListNoSplit.split(",");
+  for(var t in currentList){
+  var li = document.createElement("li");
+  var node = document.createTextNode(currentList[t]);
+  li.appendChild(node);
+  document.getElementById("myUL").appendChild(li);
+  
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+  }
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+    var div = this.parentElement;
+	for(var t in currentList){
+	var comp1 = div.innerText.split("\u00D7");
+	if(comp1[0] == currentList[t])
+	  delete currentList[t];
+	  var deletedList = currentList.filter(function (x) { return true })
+	  localStorage.setItem('Lista', deletedList);
+	  break;
+	}
+    div.parentNode.removeChild(div);
+    }
+  }
+  }
+  if(localStorage.getItem('Hidden') != null){
+  var boton = document.getElementById('end');
+  if(localStorage.getItem('Hidden') == "true") {
+    document.getElementById('add').style.visibility = 'hidden';
+    boton.innerHTML = "Add again";
+  } else {
+    document.getElementById('add').style.visibility = 'visible';
+    boton.innerHTML = "Finish";
+  }
+  }
+}
+
+// Create a "close" button and append it to each list item
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+	var currentListNoSplit = localStorage.getItem('Lista');
+    var currentList = currentListNoSplit.split(",")
+	for(var t in currentList){
+	var comp1 = div.innerText.split("\u00D7");
+	if(comp1[0] == currentList[t])
+	  delete currentList[t];
+	  var deletedList = currentList.filter(function (x) { return true })
+	  localStorage.setItem('Lista', deletedList);
+	  break;
+	}
+    div.parentNode.removeChild(div);
+  }
+}
+
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+var contador = 0;
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    if(ev.target.classList.toggle('checked')) {
+	contador += 1;}
+	else {
+	contador -= 1;}
+  }
+  var currentListNoSplit = localStorage.getItem('Lista');
+  var currentList = currentListNoSplit.split(",")
+  if(contador == currentList.length){
+	alert("You have completed all your things to do!");
+  }
+}, false);
+
+// Create a new list item when clicking on the "Add" button
+if(localStorage.getItem('Lista') != null && localStorage.getItem('Lista') != ""){
+  var currentListNoSplit = localStorage.getItem('Lista');
+  var listaGeneral = currentListNoSplit.split(",");
+}
+else{
+var listaGeneral = [];
+}
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+	listaGeneral.push(li.innerText);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+    var div = this.parentElement;
+	var currentListNoSplit = localStorage.getItem('Lista');
+    var currentList = currentListNoSplit.split(",")
+	for(var t in currentList){
+	var comp1 = div.innerText.split("\u00D7");
+	if(comp1[0] == currentList[t])
+	  delete currentList[t];
+	  var deletedList = currentList.filter(function (x) { return true })
+	  localStorage.setItem('Lista', deletedList);
+	  break;
+	}
+    div.parentNode.removeChild(div);
+    }
+  }
+  localStorage.setItem('Lista', listaGeneral);
+}
+
+// Funcion para ocultar el boton de Add
+if(localStorage.getItem('Hidden') != null){
+	if(localStorage.getItem('Hidden') == "true"){ var hidden = true }
+	else{ var hidden = false }
+}
+else{
+var hidden = false;
+}
+function end() {
+  hidden = !hidden;
+  var boton = document.getElementById('end');
+  if(hidden == true) {
+    document.getElementById('add').style.visibility = 'hidden';
+    boton.innerHTML = "Add again";
+	localStorage.setItem('Hidden', hidden);
+  } else {
+    document.getElementById('add').style.visibility = 'visible';
+    boton.innerHTML = "Finish";
+	localStorage.setItem('Hidden', hidden);	
+  }
+}
+
+// Listener para el enter del texto para camareros
+document.getElementById("myInput")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13 && localStorage.getItem('Hidden') == "false") {
+        document.getElementById("add").click();
+    }
+});
+</script>
+
+</body>
+</html>
