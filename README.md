@@ -1,5 +1,5 @@
 # To_do_list
-Simple JS to do list with persistence.
+Simple HTML to do list with persistence.
 
 ## Built With
 
